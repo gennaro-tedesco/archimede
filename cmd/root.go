@@ -11,7 +11,8 @@ var rootCmd = &cobra.Command{
 	Short: "Fetch directory info",
 	Long:  "Unobtrusive directory information fetcher",
 	Run: func(cmd *cobra.Command, args []string) {
-		displayInfo()
+		fileFormat, _ := cmd.Flags().GetString("file")
+		displayInfo(fileFormat)
 	},
 }
 
@@ -20,6 +21,7 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.Flags().StringP("file", "f", "long", "short/long file format")
 	rootCmd.SetHelpTemplate(getRootHelp())
 }
 
