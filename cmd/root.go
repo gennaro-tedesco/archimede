@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -13,11 +11,7 @@ var rootCmd = &cobra.Command{
 	Short: "Fetch directory info",
 	Long:  "Unobtrusive directory information fetcher",
 	Run: func(cmd *cobra.Command, args []string) {
-		filesList := getFiles()
-
-		totalFiles, countExtensions := countFiles(filesList)
-		fmt.Println(totalFiles)
-		fmt.Println(countExtensions)
+		displayInfo()
 	},
 }
 
