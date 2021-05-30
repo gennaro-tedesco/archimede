@@ -1,22 +1,49 @@
 package cmd
 
 import (
-	"io/ioutil"
+	"io/fs"
 	"log"
+	"path/filepath"
+	"regexp"
 )
 
 func getFiles() []string {
 	var filesList []string
+	var gr = regexp.MustCompile(`^\.git/`)
 
-	files, err := ioutil.ReadDir("./")
+	err := filepath.WalkDir(".",
+		func(path string, d fs.DirEntry, e error) error {
+			if e != nil {
+				return e
+			}
+			if !d.IsDir() && !gr.MatchString(path) {
+				filesList = append(filesList, path)
+			}
+			return nil
+		})
 	if err != nil {
 		log.Fatal(err)
 	}
+	return filesList
+}
 
-	for _, f := range files {
-		if !f.IsDir() {
-			filesList = append(filesList, f.Name())
+func parseFiles(filesList []string) map[string]int {
+	var normalFiles []string
+	var hiddenFiles []string
+	var hr = regexp.MustCompile(`^\.`)
+
+	for _, f := range filesList {
+		if hr.MatchString(f) {
+			hiddenFiles = append(hiddenFiles, f)
+		} else {
+			normalFiles = append(normalFiles, f)
 		}
 	}
-	return filesList
+
+	counts := map[string]int{
+		"normal": len(normalFiles),
+		"hidden": len(hiddenFiles),
+	}
+
+	return counts
 }

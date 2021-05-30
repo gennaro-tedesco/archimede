@@ -16,6 +16,10 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		filesList := getFiles()
 		fmt.Println(filesList)
+
+		counts := parseFiles(filesList)
+		fmt.Println(counts["normal"])
+		fmt.Println(counts["hidden"])
 	},
 }
 
