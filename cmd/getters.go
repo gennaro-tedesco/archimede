@@ -5,7 +5,14 @@ import (
 	"log"
 	"path/filepath"
 	"regexp"
+	"sort"
+	"strings"
 )
+
+type kv struct {
+	Key   string
+	Value int
+}
 
 func getFiles() []string {
 	var filesList []string
@@ -27,10 +34,11 @@ func getFiles() []string {
 	return filesList
 }
 
-func parseFiles(filesList []string) map[string]int {
+func countFiles(filesList []string) (map[string]int, []kv) {
 	var normalFiles []string
 	var hiddenFiles []string
 	var hr = regexp.MustCompile(`^\.`)
+	var extensions []string
 
 	for _, f := range filesList {
 		if hr.MatchString(f) {
@@ -38,12 +46,32 @@ func parseFiles(filesList []string) map[string]int {
 		} else {
 			normalFiles = append(normalFiles, f)
 		}
+		ext := strings.Split(f, ".")
+		extensions = append(extensions, ext[len(ext)-1])
 	}
 
-	counts := map[string]int{
+	totalFiles := map[string]int{
 		"normal": len(normalFiles),
 		"hidden": len(hiddenFiles),
 	}
 
-	return counts
+	extCount := make(map[string]int)
+	for _, ex := range extensions {
+		extCount[ex]++
+	}
+
+	return totalFiles, sortExtensions(extCount)
+}
+
+func sortExtensions(extCount map[string]int) []kv {
+
+	var ss []kv
+	for k, v := range extCount {
+		ss = append(ss, kv{k, v})
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].Value > ss[j].Value
+	})
+	return ss[0:3]
 }

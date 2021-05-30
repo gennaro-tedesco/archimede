@@ -8,18 +8,16 @@ import (
 
 var cfgFile string
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "dirinfo",
 	Short: "Fetch directory info",
 	Long:  "Unobtrusive directory information fetcher",
 	Run: func(cmd *cobra.Command, args []string) {
 		filesList := getFiles()
-		fmt.Println(filesList)
 
-		counts := parseFiles(filesList)
-		fmt.Println(counts["normal"])
-		fmt.Println(counts["hidden"])
+		totalFiles, countExtensions := countFiles(filesList)
+		fmt.Println(totalFiles)
+		fmt.Println(countExtensions)
 	},
 }
 
