@@ -3,6 +3,7 @@ package cmd
 import (
 	"io/fs"
 	"log"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -109,4 +110,24 @@ func countDirs() map[string]int {
 		log.Fatal(err)
 	}
 	return dirList
+}
+
+func isGitRepo() bool {
+	_, err := exec.Command("bash", "-c", "git rev-parse --is-inside-work-tree 2>/dev/null").Output()
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func getGitStatus() string {
+	if !isGitRepo() {
+		return "not a git repo"
+	}
+
+	gitBranch, err := exec.Command("bash", "-c", "git branch --show-current | tr -d '\n' ").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(gitBranch)
 }

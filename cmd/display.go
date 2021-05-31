@@ -24,7 +24,7 @@ func colourMap() map[string]text.Color {
 }
 
 func displayInfo(
-	fileFormat string,
+	printFormat string,
 	textColour string,
 	separator string,
 	gitFolder bool) {
@@ -34,29 +34,23 @@ func displayInfo(
 	filesList := getFiles(gitFolder)
 	totalFiles, extCount := countFiles(filesList)
 	total := totalFiles["normal"] + totalFiles["hidden"]
-	if fileFormat == "long" && len(extCount) > 2 {
-		t.AppendRow(table.Row{
-			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
+	dirsList := countDirs()
+	if printFormat == "long" && len(extCount) > 2 {
+		t.AppendRows([]table.Row{
+			{fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
 				totalFiles["normal"], totalFiles["hidden"],
 				100*extCount[0].Value/total, extCount[0].Key,
 				100*extCount[1].Value/total, extCount[1].Key,
-				100*extCount[2].Value/total, extCount[2].Key),
+				100*extCount[2].Value/total, extCount[2].Key)},
+			{fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v   + %v  /  + %v  / /  ",
+				dirsList["one"], dirsList["two"], dirsList["three"])},
+			{fmt.Sprintf("Git%v", separator), fmt.Sprintf("\uE0A0 %v", getGitStatus())},
 		})
 	} else {
-		t.AppendRow(table.Row{
-			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v + %v ", totalFiles["normal"], totalFiles["hidden"]),
-		})
-	}
-
-	dirsList := countDirs()
-	if fileFormat == "long" {
-		t.AppendRow(table.Row{
-			fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v   + %v  /  + %v  / /  ",
-				dirsList["one"], dirsList["two"], dirsList["three"]),
-		})
-	} else {
-		t.AppendRow(table.Row{
-			fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v + %v +%v ", dirsList["one"], dirsList["two"], dirsList["three"]),
+		t.AppendRows([]table.Row{
+			{fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v + %v", totalFiles["normal"], totalFiles["hidden"])},
+			{fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v + %v + %v ", dirsList["one"], dirsList["two"], dirsList["three"])},
+			{fmt.Sprintf("Git%v", separator), fmt.Sprintf(getGitStatus())},
 		})
 	}
 
