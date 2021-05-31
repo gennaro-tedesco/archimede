@@ -126,17 +126,17 @@ func getGitStatus() map[string]string {
 		log.Fatal(eb)
 	}
 
-	modified, em := exec.Command("bash", "-c", "git status | grep 'modified:' | wc -l | tr -d '\n' | tr -d ' '").Output()
+	modified, em := exec.Command("bash", "-c", "git diff --name-only --diff-filter=M | wc -l | tr -d '\n' | tr -d ' '").Output()
 	if em != nil {
 		log.Fatal(em)
 	}
 
-	added, ea := exec.Command("bash", "-c", "git status | grep 'added:' | wc -l | tr -d '\n' | tr -d ' '").Output()
+	added, ea := exec.Command("bash", "-c", "git diff --name-only --diff-filter=A | wc -l | tr -d '\n' | tr -d ' '").Output()
 	if ea != nil {
 		log.Fatal(ea)
 	}
 
-	deleted, ed := exec.Command("bash", "-c", "git status | grep 'deleted:' | wc -l | tr -d '\n' | tr -d ' '").Output()
+	deleted, ed := exec.Command("bash", "-c", "git diff --name-only --diff-filter=D | wc -l | tr -d '\n' | tr -d ' '").Output()
 	if ed != nil {
 		log.Fatal(ed)
 	}
