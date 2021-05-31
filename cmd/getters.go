@@ -14,7 +14,7 @@ type kv struct {
 	Value int
 }
 
-func getFiles() []string {
+func getFiles(gitFolder bool) []string {
 	var filesList []string
 	var gr = regexp.MustCompile(`^\.git/`)
 
@@ -23,8 +23,12 @@ func getFiles() []string {
 			if e != nil {
 				return e
 			}
-			if !d.IsDir() && !gr.MatchString(path) {
-				filesList = append(filesList, path)
+			if !d.IsDir() {
+				if gitFolder {
+					filesList = append(filesList, path)
+				} else if !gr.MatchString(path) {
+					filesList = append(filesList, path)
+				}
 			}
 			return nil
 		})

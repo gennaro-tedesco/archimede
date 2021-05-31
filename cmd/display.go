@@ -6,6 +6,7 @@ import (
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/jedib0t/go-pretty/v6/text"
+	"golang.org/x/term"
 )
 
 func colourMap() map[string]text.Color {
@@ -25,14 +26,21 @@ func colourMap() map[string]text.Color {
 func displayInfo(
 	fileFormat string,
 	textColour string,
-	separator string) {
-	filesList := getFiles()
+	separator string,
+	gitFolder bool) {
+	filesList := getFiles(gitFolder)
 	totalFiles, extCount := countFiles(filesList)
 	total := totalFiles["normal"] + totalFiles["hidden"]
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.SetStyle(table.StyleLight)
+
+	width, _, _ := term.GetSize(0)
+	t.SetColumnConfigs([]table.ColumnConfig{
+		{Number: 1, WidthMax: width / 3},
+		{Number: 2, WidthMax: 2 * width / 3},
+	})
 
 	if colour, ok := colourMap()[textColour]; ok {
 		t.Style().Color.Row = text.Colors{colour}

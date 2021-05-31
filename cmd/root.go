@@ -4,8 +4,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
-
 var rootCmd = &cobra.Command{
 	Use:   "archimede",
 	Short: "Fetch directory info",
@@ -14,7 +12,12 @@ var rootCmd = &cobra.Command{
 		fileFormat, _ := cmd.Flags().GetString("file")
 		textColour, _ := cmd.Flags().GetString("colour")
 		separator, _ := cmd.Flags().GetString("separator")
-		displayInfo(fileFormat, textColour, separator)
+		gitFolder, _ := cmd.Flags().GetBool("git")
+		displayInfo(
+			fileFormat,
+			textColour,
+			separator,
+			gitFolder)
 	},
 }
 
@@ -26,6 +29,7 @@ func init() {
 	rootCmd.Flags().StringP("file", "f", "long", "short/long file format")
 	rootCmd.Flags().StringP("colour", "c", "cyan", "text colour")
 	rootCmd.Flags().StringP("separator", "s", ":", "key-value separator character")
+	rootCmd.Flags().BoolP("git", "g", false, "include .git folder in files stats?")
 	rootCmd.SetHelpTemplate(getRootHelp())
 }
 
