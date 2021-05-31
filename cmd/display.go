@@ -45,7 +45,7 @@ func displayInfo(
 	t.Style().Box.TopRight = "╮"
 	t.Style().Box.BottomRight = "╯"
 
-	if fileFormat == "long" {
+	if fileFormat == "long" && len(extCount) > 2 {
 		t.AppendRow(table.Row{
 			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
 				totalFiles["normal"], totalFiles["hidden"],
