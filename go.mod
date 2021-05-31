@@ -1,4 +1,4 @@
-module github.com/gennaro-tedesco/dirinfo
+module github.com/gennaro-tedesco/archimede
 
 go 1.16
 

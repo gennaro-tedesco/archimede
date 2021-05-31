@@ -8,7 +8,23 @@ import (
 	"github.com/jedib0t/go-pretty/v6/text"
 )
 
-func displayInfo(fileFormat string) {
+func colourMap() map[string]text.Color {
+	colourMap := map[string]text.Color{
+		"black":   text.FgBlack,
+		"cyan":    text.FgCyan,
+		"green":   text.FgGreen,
+		"yellow":  text.FgYellow,
+		"blue":    text.FgBlue,
+		"magenta": text.FgMagenta,
+		"red":     text.FgRed,
+		"white":   text.FgWhite,
+	}
+	return colourMap
+}
+
+func displayInfo(
+	fileFormat string,
+	textColour string) {
 	filesList := getFiles()
 	totalFiles, extCount := countFiles(filesList)
 	total := totalFiles["normal"] + totalFiles["hidden"]
@@ -16,7 +32,12 @@ func displayInfo(fileFormat string) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.SetStyle(table.StyleLight)
-	t.Style().Color.Row = text.Colors{text.FgCyan}
+
+	if colour, ok := colourMap()[textColour]; ok {
+		t.Style().Color.Row = text.Colors{colour}
+	} else {
+		t.Style().Color.Row = text.Colors{text.FgWhite}
+	}
 	t.Style().Options.SeparateColumns = false
 	t.Style().Box.BottomLeft = "╰"
 	t.Style().Box.TopLeft = "╭"
