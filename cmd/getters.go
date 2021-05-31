@@ -3,6 +3,7 @@ package cmd
 import (
 	"io/fs"
 	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
@@ -13,6 +14,14 @@ import (
 type kv struct {
 	Key   string
 	Value int
+}
+
+func getCwd() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return dir
 }
 
 func getFiles(gitFolder bool) []string {
@@ -144,7 +153,7 @@ func getGitStatus() map[string]string {
 }
 
 func getDiskUsage() string {
-	du, err := exec.Command("bash", "-c", "du -sh . | cut -f1 | tr -d '\n' ").Output()
+	du, err := exec.Command("bash", "-c", "du -sh . | cut -f1 | tr -d '\n' | tr -d ' '").Output()
 	if err != nil {
 		log.Fatal(err)
 	}

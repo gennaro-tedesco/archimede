@@ -30,6 +30,7 @@ func displayInfo(
 	delimiter string) {
 
 	t := createTable(textColour)
+	displayCwd(t, delimiter)
 	displayFiles(t, short, git, delimiter)
 	displayDirs(t, short, delimiter)
 	displayGit(t, short, delimiter)
@@ -55,11 +56,17 @@ func createTable(textColour string) table.Writer {
 		t.Style().Color.Row = text.Colors{text.FgWhite}
 	}
 	t.Style().Options.SeparateColumns = false
+	t.Style().Box.PaddingLeft = "   "
+	t.Style().Box.PaddingRight = "   "
 	t.Style().Box.BottomLeft = "╰"
 	t.Style().Box.TopLeft = "╭"
 	t.Style().Box.TopRight = "╮"
 	t.Style().Box.BottomRight = "╯"
 	return t
+}
+
+func displayCwd(t table.Writer, delimiter string) {
+	t.AppendRow(table.Row{fmt.Sprintf("Path%v", delimiter), fmt.Sprint(getCwd())})
 }
 
 func displayFiles(t table.Writer, short bool, git bool, delimiter string) {
