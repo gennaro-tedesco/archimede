@@ -120,13 +120,7 @@ func isGitRepo() bool {
 	return true
 }
 
-func getGitStatus() (map[string]string, bool) {
-	gitStatus := make(map[string]string)
-
-	if !isGitRepo() {
-		return gitStatus, false
-	}
-
+func getGitStatus() map[string]string {
 	gitBranch, eb := exec.Command("bash", "-c", "git branch --show-current | tr -d '\n' ").Output()
 	if eb != nil {
 		log.Fatal(eb)
@@ -147,10 +141,10 @@ func getGitStatus() (map[string]string, bool) {
 		log.Fatal(ed)
 	}
 
-	gitStatus["branch"] = string(gitBranch)
-	gitStatus["modified"] = string(modified)
-	gitStatus["added"] = string(added)
-	gitStatus["deleted"] = string(deleted)
-
-	return gitStatus, true
+	return map[string]string{
+		"branch":   string(gitBranch),
+		"modified": string(modified),
+		"added":    string(added),
+		"deleted":  string(deleted),
+	}
 }

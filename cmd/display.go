@@ -24,59 +24,20 @@ func colourMap() map[string]text.Color {
 }
 
 func displayInfo(
-	printFormat string,
+	short bool,
+	git bool,
 	textColour string,
-	separator string,
-	gitFolder bool) {
+	delimiter string) {
 
-	t := initTable(textColour)
-
-	filesList := getFiles(gitFolder)
-	totalFiles, extCount := countFiles(filesList)
-	total := totalFiles["normal"] + totalFiles["hidden"]
-	dirsList := countDirs()
-	status := func() map[string]string {
-		if gs, ok := getGitStatus(); ok {
-			return map[string]string{
-				"branch":   fmt.Sprintf("%v,", gs["branch"]),
-				"added":    fmt.Sprintf("%v added", gs["added"]),
-				"modified": fmt.Sprintf("%v modified", gs["modified"]),
-				"deleted":  fmt.Sprintf("%v deleted", gs["deleted"]),
-			}
-		}
-		return map[string]string{
-			"branch":   "not a repo",
-			"added":    "",
-			"modified": "",
-			"deleted":  "",
-		}
-	}
-
-	if printFormat == "long" && len(extCount) > 2 {
-		t.AppendRows([]table.Row{
-			{fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
-				totalFiles["normal"], totalFiles["hidden"],
-				100*extCount[0].Value/total, extCount[0].Key,
-				100*extCount[1].Value/total, extCount[1].Key,
-				100*extCount[2].Value/total, extCount[2].Key)},
-			{fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v   + %v  /  + %v  / /  ",
-				dirsList["one"], dirsList["two"], dirsList["three"])},
-			{fmt.Sprintf("Git%v", separator), fmt.Sprintf("\uE0A0 %v", fmt.Sprintf("%v %v %v %v",
-				status()["branch"], status()["added"], status()["modified"], status()["deleted"]))},
-		})
-	} else {
-		t.AppendRows([]table.Row{
-			{fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v + %v", totalFiles["normal"], totalFiles["hidden"])},
-			{fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v + %v + %v ", dirsList["one"], dirsList["two"], dirsList["three"])},
-			{fmt.Sprintf("Git%v", separator), fmt.Sprintf("%v", status()["branch"])},
-		})
-	}
-
+	t := createTable(textColour)
+	displayFiles(t, short, git, delimiter)
+	displayDirs(t, short, delimiter)
+	displayGit(t, short, delimiter)
 	t.AppendSeparator()
 	t.Render()
 }
 
-func initTable(textColour string) table.Writer {
+func createTable(textColour string) table.Writer {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.SetStyle(table.StyleLight)
@@ -98,4 +59,64 @@ func initTable(textColour string) table.Writer {
 	t.Style().Box.TopRight = "╮"
 	t.Style().Box.BottomRight = "╯"
 	return t
+}
+
+func displayFiles(t table.Writer, short bool, git bool, delimiter string) {
+	filesList := getFiles(git)
+	totalFiles, extCount := countFiles(filesList)
+	total := totalFiles["normal"] + totalFiles["hidden"]
+
+	if !short && len(extCount) > 2 {
+		t.AppendRow(table.Row{fmt.Sprintf("Files%v", delimiter),
+			fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
+				totalFiles["normal"], totalFiles["hidden"],
+				100*extCount[0].Value/total, extCount[0].Key,
+				100*extCount[1].Value/total, extCount[1].Key,
+				100*extCount[2].Value/total, extCount[2].Key)},
+		)
+	} else {
+		t.AppendRow(table.Row{fmt.Sprintf("Files%v", delimiter),
+			fmt.Sprintf("%v + %v", totalFiles["normal"], totalFiles["hidden"])},
+		)
+	}
+}
+
+func displayDirs(t table.Writer, short bool, delimiter string) {
+	dirsList := countDirs()
+	if !short {
+		t.AppendRow(table.Row{fmt.Sprintf("Dirs%v", delimiter),
+			fmt.Sprintf("%v   + %v  /  + %v  / /  ",
+				dirsList["one"], dirsList["two"], dirsList["three"])},
+		)
+	} else {
+		t.AppendRow(table.Row{fmt.Sprintf("Dirs%v", delimiter),
+			fmt.Sprintf("%v + %v + %v ", dirsList["one"], dirsList["two"], dirsList["three"])},
+		)
+	}
+}
+
+func displayGit(t table.Writer, short bool, delimiter string) {
+	if !short {
+		if isGitRepo() {
+			t.AppendRow(table.Row{fmt.Sprintf("Git%v", delimiter),
+				fmt.Sprintf("\uE0A0 %v (%v added %v modified %v deleted)",
+					getGitStatus()["branch"], getGitStatus()["added"], getGitStatus()["modified"], getGitStatus()["deleted"])},
+			)
+		} else {
+			t.AppendRow(table.Row{fmt.Sprintf("Git%v", delimiter),
+				fmt.Sprint("not a git repo")},
+			)
+		}
+	} else {
+		if isGitRepo() {
+			t.AppendRow(table.Row{fmt.Sprintf("Git%v", delimiter),
+				fmt.Sprintf("%v (%vA %vM %vD)",
+					getGitStatus()["branch"], getGitStatus()["added"], getGitStatus()["modified"], getGitStatus()["deleted"])},
+			)
+		} else {
+			t.AppendRow(table.Row{fmt.Sprintf("Git%v", delimiter),
+				fmt.Sprint("no")},
+			)
+		}
+	}
 }

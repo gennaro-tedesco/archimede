@@ -9,15 +9,15 @@ var rootCmd = &cobra.Command{
 	Short: "Fetch directory info",
 	Long:  "Unobtrusive directory information fetcher",
 	Run: func(cmd *cobra.Command, args []string) {
-		printFormat, _ := cmd.Flags().GetString("print")
+		short, _ := cmd.Flags().GetBool("short")
+		git, _ := cmd.Flags().GetBool("git")
 		textColour, _ := cmd.Flags().GetString("colour")
-		separator, _ := cmd.Flags().GetString("separator")
-		gitFolder, _ := cmd.Flags().GetBool("git")
+		delimiter, _ := cmd.Flags().GetString("delimiter")
 		displayInfo(
-			printFormat,
+			short,
+			git,
 			textColour,
-			separator,
-			gitFolder)
+			delimiter)
 	},
 }
 
@@ -26,10 +26,10 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().StringP("print", "p", "long", "short/long print format")
+	rootCmd.Flags().BoolP("short", "s", false, "print short format: default false")
+	rootCmd.Flags().BoolP("git", "g", false, "include .git folder in files stats: default false")
 	rootCmd.Flags().StringP("colour", "c", "cyan", "text colour")
-	rootCmd.Flags().StringP("separator", "s", ":", "key-value separator character")
-	rootCmd.Flags().BoolP("git", "g", false, "include .git folder in files stats?")
+	rootCmd.Flags().StringP("delimiter", "d", ":", "key-value delimiter character")
 	rootCmd.SetHelpTemplate(getRootHelp())
 }
 
