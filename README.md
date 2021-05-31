@@ -18,12 +18,6 @@ Go get it!
 go get github.com/gennaro-tedesco/archimede
 ```
 
-## Tests
-Run unit tests with
-```
-go test -v ./cmd
-```
-
 ## Feedback
 If you find this application useful consider awarding it a ⭐, it is a great way to give feedback! Otherwise, any additional suggestions or merge request is warmly welcome!
 

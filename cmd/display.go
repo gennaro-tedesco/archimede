@@ -28,10 +28,43 @@ func displayInfo(
 	textColour string,
 	separator string,
 	gitFolder bool) {
+
+	t := initTable(textColour)
+
 	filesList := getFiles(gitFolder)
 	totalFiles, extCount := countFiles(filesList)
 	total := totalFiles["normal"] + totalFiles["hidden"]
+	if fileFormat == "long" && len(extCount) > 2 {
+		t.AppendRow(table.Row{
+			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
+				totalFiles["normal"], totalFiles["hidden"],
+				100*extCount[0].Value/total, extCount[0].Key,
+				100*extCount[1].Value/total, extCount[1].Key,
+				100*extCount[2].Value/total, extCount[2].Key),
+		})
+	} else {
+		t.AppendRow(table.Row{
+			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v + %v ", totalFiles["normal"], totalFiles["hidden"]),
+		})
+	}
 
+	dirsList := countDirs()
+	if fileFormat == "long" {
+		t.AppendRow(table.Row{
+			fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v   + %v  /  + %v  / /  ",
+				dirsList["one"], dirsList["two"], dirsList["three"]),
+		})
+	} else {
+		t.AppendRow(table.Row{
+			fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v + %v +%v ", dirsList["one"], dirsList["two"], dirsList["three"]),
+		})
+	}
+
+	t.AppendSeparator()
+	t.Render()
+}
+
+func initTable(textColour string) table.Writer {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.SetStyle(table.StyleLight)
@@ -52,20 +85,5 @@ func displayInfo(
 	t.Style().Box.TopLeft = "╭"
 	t.Style().Box.TopRight = "╮"
 	t.Style().Box.BottomRight = "╯"
-
-	if fileFormat == "long" && len(extCount) > 2 {
-		t.AppendRow(table.Row{
-			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
-				totalFiles["normal"], totalFiles["hidden"],
-				100*extCount[0].Value/total, extCount[0].Key,
-				100*extCount[1].Value/total, extCount[1].Key,
-				100*extCount[2].Value/total, extCount[2].Key),
-		})
-	} else {
-		t.AppendRow(table.Row{
-			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v + %v ", totalFiles["normal"], totalFiles["hidden"]),
-		})
-	}
-	t.AppendSeparator()
-	t.Render()
+	return t
 }
