@@ -29,7 +29,7 @@ func init() {
 	rootCmd.Flags().BoolP("short", "s", false, "print short format: default false")
 	rootCmd.Flags().BoolP("git", "g", false, "include .git folder in files stats: default false")
 	rootCmd.Flags().StringP("colour", "c", "cyan", "text colour")
-	rootCmd.Flags().StringP("delimiter", "d", ":", "key-value delimiter character")
+	rootCmd.Flags().StringP("delimiter", "d", " ", "key-value delimiter character")
 	rootCmd.SetHelpTemplate(getRootHelp())
 }
 
