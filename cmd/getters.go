@@ -73,5 +73,5 @@ func sortExtensions(extCount map[string]int) []kv {
 	sort.Slice(ss, func(i, j int) bool {
 		return ss[i].Value > ss[j].Value
 	})
-	return ss[0:3]
+	return ss
 }

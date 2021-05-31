@@ -24,7 +24,8 @@ func colourMap() map[string]text.Color {
 
 func displayInfo(
 	fileFormat string,
-	textColour string) {
+	textColour string,
+	separator string) {
 	filesList := getFiles()
 	totalFiles, extCount := countFiles(filesList)
 	total := totalFiles["normal"] + totalFiles["hidden"]
@@ -46,7 +47,7 @@ func displayInfo(
 
 	if fileFormat == "long" {
 		t.AppendRow(table.Row{
-			"Files:", fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
+			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
 				totalFiles["normal"], totalFiles["hidden"],
 				100*extCount[0].Value/total, extCount[0].Key,
 				100*extCount[1].Value/total, extCount[1].Key,
@@ -54,7 +55,7 @@ func displayInfo(
 		})
 	} else {
 		t.AppendRow(table.Row{
-			"Files:", fmt.Sprintf("%v + %v ", totalFiles["normal"], totalFiles["hidden"]),
+			fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v + %v ", totalFiles["normal"], totalFiles["hidden"]),
 		})
 	}
 	t.AppendSeparator()

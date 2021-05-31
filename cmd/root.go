@@ -13,7 +13,8 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fileFormat, _ := cmd.Flags().GetString("file")
 		textColour, _ := cmd.Flags().GetString("colour")
-		displayInfo(fileFormat, textColour)
+		separator, _ := cmd.Flags().GetString("separator")
+		displayInfo(fileFormat, textColour, separator)
 	},
 }
 
@@ -24,6 +25,7 @@ func Execute() {
 func init() {
 	rootCmd.Flags().StringP("file", "f", "long", "short/long file format")
 	rootCmd.Flags().StringP("colour", "c", "cyan", "text colour")
+	rootCmd.Flags().StringP("separator", "s", ":", "key-value separator character")
 	rootCmd.SetHelpTemplate(getRootHelp())
 }
 
