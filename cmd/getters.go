@@ -131,12 +131,7 @@ func getGitStatus() map[string]string {
 		log.Fatal(em)
 	}
 
-	added, ea := exec.Command("bash", "-c", "git diff --name-only --diff-filter=A | wc -l | tr -d '\n' | tr -d ' '").Output()
-	if ea != nil {
-		log.Fatal(ea)
-	}
-
-	deleted, ed := exec.Command("bash", "-c", "git diff --name-only --diff-filter=D | wc -l | tr -d '\n' | tr -d ' '").Output()
+	staged, ed := exec.Command("bash", "-c", "git diff --name-only --staged | wc -l | tr -d '\n' | tr -d ' '").Output()
 	if ed != nil {
 		log.Fatal(ed)
 	}
@@ -144,7 +139,14 @@ func getGitStatus() map[string]string {
 	return map[string]string{
 		"branch":   string(gitBranch),
 		"modified": string(modified),
-		"added":    string(added),
-		"deleted":  string(deleted),
+		"staged":   string(staged),
 	}
+}
+
+func getDiskUsage() string {
+	du, err := exec.Command("bash", "-c", "du -sh . | cut -f1 | tr -d '\n' ").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(du)
 }

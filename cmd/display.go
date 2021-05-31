@@ -33,6 +33,7 @@ func displayInfo(
 	displayFiles(t, short, git, delimiter)
 	displayDirs(t, short, delimiter)
 	displayGit(t, short, delimiter)
+	displayDiskUsage(t, delimiter)
 	t.AppendSeparator()
 	t.Render()
 }
@@ -99,8 +100,8 @@ func displayGit(t table.Writer, short bool, delimiter string) {
 	if !short {
 		if isGitRepo() {
 			t.AppendRow(table.Row{fmt.Sprintf("Git%v", delimiter),
-				fmt.Sprintf("\uE0A0 %v (%v added %v modified %v deleted)",
-					getGitStatus()["branch"], getGitStatus()["added"], getGitStatus()["modified"], getGitStatus()["deleted"])},
+				fmt.Sprintf("\uE0A0 %v (%v staged %v modified)",
+					getGitStatus()["branch"], getGitStatus()["staged"], getGitStatus()["modified"])},
 			)
 		} else {
 			t.AppendRow(table.Row{fmt.Sprintf("Git%v", delimiter),
@@ -110,8 +111,8 @@ func displayGit(t table.Writer, short bool, delimiter string) {
 	} else {
 		if isGitRepo() {
 			t.AppendRow(table.Row{fmt.Sprintf("Git%v", delimiter),
-				fmt.Sprintf("%v (%vA %vM %vD)",
-					getGitStatus()["branch"], getGitStatus()["added"], getGitStatus()["modified"], getGitStatus()["deleted"])},
+				fmt.Sprintf("%v (+%v !%v)",
+					getGitStatus()["branch"], getGitStatus()["staged"], getGitStatus()["modified"])},
 			)
 		} else {
 			t.AppendRow(table.Row{fmt.Sprintf("Git%v", delimiter),
@@ -119,4 +120,10 @@ func displayGit(t table.Writer, short bool, delimiter string) {
 			)
 		}
 	}
+}
+
+func displayDiskUsage(t table.Writer, delimiter string) {
+	t.AppendRow(table.Row{fmt.Sprintf("Space%v", delimiter),
+		fmt.Sprintf("%v", getDiskUsage())},
+	)
 }
