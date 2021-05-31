@@ -56,8 +56,8 @@ func createTable(textColour string) table.Writer {
 		t.Style().Color.Row = text.Colors{text.FgWhite}
 	}
 	t.Style().Options.SeparateColumns = false
-	t.Style().Box.PaddingLeft = "   "
-	t.Style().Box.PaddingRight = "   "
+	t.Style().Box.PaddingLeft = "  "
+	t.Style().Box.PaddingRight = "  "
 	t.Style().Box.BottomLeft = "╰"
 	t.Style().Box.TopLeft = "╭"
 	t.Style().Box.TopRight = "╮"

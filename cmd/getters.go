@@ -122,7 +122,7 @@ func countDirs() map[string]int {
 }
 
 func isGitRepo() bool {
-	_, err := exec.Command("bash", "-c", "git rev-parse --is-inside-work-tree 2>/dev/null").Output()
+	_, err := exec.Command("sh", "-c", "git rev-parse --is-inside-work-tree 2>/dev/null").Output()
 	if err != nil {
 		return false
 	}
@@ -130,17 +130,17 @@ func isGitRepo() bool {
 }
 
 func getGitStatus() map[string]string {
-	gitBranch, eb := exec.Command("bash", "-c", "git branch --show-current | tr -d '\n' ").Output()
+	gitBranch, eb := exec.Command("sh", "-c", "git branch --show-current | tr -d '\n' ").Output()
 	if eb != nil {
 		log.Fatal(eb)
 	}
 
-	modified, em := exec.Command("bash", "-c", "git diff --name-only --diff-filter=M | wc -l | tr -d '\n' | tr -d ' '").Output()
+	modified, em := exec.Command("sh", "-c", "git diff --name-only --diff-filter=M | wc -l | tr -d '\n' | tr -d ' '").Output()
 	if em != nil {
 		log.Fatal(em)
 	}
 
-	staged, ed := exec.Command("bash", "-c", "git diff --name-only --staged | wc -l | tr -d '\n' | tr -d ' '").Output()
+	staged, ed := exec.Command("sh", "-c", "git diff --name-only --staged | wc -l | tr -d '\n' | tr -d ' '").Output()
 	if ed != nil {
 		log.Fatal(ed)
 	}
@@ -153,7 +153,7 @@ func getGitStatus() map[string]string {
 }
 
 func getDiskUsage() string {
-	du, err := exec.Command("bash", "-c", "du -sh . | cut -f1 | tr -d '\n' | tr -d ' '").Output()
+	du, err := exec.Command("sh", "-c", "du -sh . | cut -f1 | tr -d '\n' | tr -d ' '").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
