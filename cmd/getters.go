@@ -120,14 +120,37 @@ func isGitRepo() bool {
 	return true
 }
 
-func getGitStatus() string {
+func getGitStatus() (map[string]string, bool) {
+	gitStatus := make(map[string]string)
+
 	if !isGitRepo() {
-		return "not a git repo"
+		return gitStatus, false
 	}
 
-	gitBranch, err := exec.Command("bash", "-c", "git branch --show-current | tr -d '\n' ").Output()
-	if err != nil {
-		log.Fatal(err)
+	gitBranch, eb := exec.Command("bash", "-c", "git branch --show-current | tr -d '\n' ").Output()
+	if eb != nil {
+		log.Fatal(eb)
 	}
-	return string(gitBranch)
+
+	modified, em := exec.Command("bash", "-c", "git status | grep 'modified:' | wc -l | tr -d '\n' | tr -d ' '").Output()
+	if em != nil {
+		log.Fatal(em)
+	}
+
+	added, ea := exec.Command("bash", "-c", "git status | grep 'added:' | wc -l | tr -d '\n' | tr -d ' '").Output()
+	if ea != nil {
+		log.Fatal(ea)
+	}
+
+	deleted, ed := exec.Command("bash", "-c", "git status | grep 'deleted:' | wc -l | tr -d '\n' | tr -d ' '").Output()
+	if ed != nil {
+		log.Fatal(ed)
+	}
+
+	gitStatus["branch"] = string(gitBranch)
+	gitStatus["modified"] = string(modified)
+	gitStatus["added"] = string(added)
+	gitStatus["deleted"] = string(deleted)
+
+	return gitStatus, true
 }

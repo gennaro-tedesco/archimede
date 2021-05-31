@@ -35,6 +35,23 @@ func displayInfo(
 	totalFiles, extCount := countFiles(filesList)
 	total := totalFiles["normal"] + totalFiles["hidden"]
 	dirsList := countDirs()
+	status := func() map[string]string {
+		if gs, ok := getGitStatus(); ok {
+			return map[string]string{
+				"branch":   fmt.Sprintf("%v,", gs["branch"]),
+				"added":    fmt.Sprintf("%v added", gs["added"]),
+				"modified": fmt.Sprintf("%v modified", gs["modified"]),
+				"deleted":  fmt.Sprintf("%v deleted", gs["deleted"]),
+			}
+		}
+		return map[string]string{
+			"branch":   "not a repo",
+			"added":    "",
+			"modified": "",
+			"deleted":  "",
+		}
+	}
+
 	if printFormat == "long" && len(extCount) > 2 {
 		t.AppendRows([]table.Row{
 			{fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v regular + %v hidden (%v%% %v, %v%% %v, %v%% %v)",
@@ -44,13 +61,14 @@ func displayInfo(
 				100*extCount[2].Value/total, extCount[2].Key)},
 			{fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v   + %v  /  + %v  / /  ",
 				dirsList["one"], dirsList["two"], dirsList["three"])},
-			{fmt.Sprintf("Git%v", separator), fmt.Sprintf("\uE0A0 %v", getGitStatus())},
+			{fmt.Sprintf("Git%v", separator), fmt.Sprintf("\uE0A0 %v", fmt.Sprintf("%v %v %v %v",
+				status()["branch"], status()["added"], status()["modified"], status()["deleted"]))},
 		})
 	} else {
 		t.AppendRows([]table.Row{
 			{fmt.Sprintf("Files%v", separator), fmt.Sprintf("%v + %v", totalFiles["normal"], totalFiles["hidden"])},
 			{fmt.Sprintf("Dirs%v", separator), fmt.Sprintf("%v + %v + %v ", dirsList["one"], dirsList["two"], dirsList["three"])},
-			{fmt.Sprintf("Git%v", separator), fmt.Sprintf(getGitStatus())},
+			{fmt.Sprintf("Git%v", separator), fmt.Sprintf("%v", status()["branch"])},
 		})
 	}
 
