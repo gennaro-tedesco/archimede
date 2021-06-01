@@ -25,21 +25,25 @@ func getCwd() string {
 	return dir
 }
 
-func getFiles(git bool, exclude string) []string {
+func getFiles(git bool, excludeDir string, excludeFile string) []string {
 	var filesList []string
 	var gr = regexp.MustCompile(`^\.git/`)
-	include := true
+	includeDir := true
+	includeFile := true
 
 	err := filepath.WalkDir(".",
 		func(path string, d fs.DirEntry, e error) error {
 			if e != nil {
 				return e
 			}
-			if exclude != "" {
-				er := regexp.MustCompile(fmt.Sprintf(`^%v`, exclude))
-				include = !er.MatchString(path)
+			if excludeDir != "" {
+				er := regexp.MustCompile(fmt.Sprintf(`^%v`, excludeDir))
+				includeDir = !er.MatchString(path)
 			}
-			if !d.IsDir() && include {
+			if excludeFile != "" {
+				includeFile = filepath.Ext(path)!=excludeFile
+			}
+			if !d.IsDir() && includeDir && includeFile {
 				if git {
 					filesList = append(filesList, path)
 				} else if !gr.MatchString(path) {
@@ -96,25 +100,25 @@ func sortExtensions(extCount map[string]int) []kv {
 	return ss
 }
 
-func countDirs(exclude string) map[string]int {
+func countDirs(excludeDir string) map[string]int {
 	var gr = regexp.MustCompile(`^\.git`)
 	dirList := map[string]int{
 		"one":   0,
 		"two":   0,
 		"three": 0,
 	}
-	include := true
+	includeDir := true
 
 	err := filepath.WalkDir(".",
 		func(path string, d fs.DirEntry, e error) error {
 			if e != nil {
 				return e
 			}
-			if exclude != "" {
-				er := regexp.MustCompile(fmt.Sprintf(`^%v`, exclude))
-				include = !er.MatchString(path)
+			if excludeDir != "" {
+				er := regexp.MustCompile(fmt.Sprintf(`^%v`, excludeDir))
+				includeDir = !er.MatchString(path)
 			}
-			if d.IsDir() && include && path != "." && !gr.MatchString(path) {
+			if d.IsDir() && includeDir && path != "." && !gr.MatchString(path) {
 				depth := strings.Split(path, "/")
 				if len(depth) == 1 {
 					dirList["one"]++

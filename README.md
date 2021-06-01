@@ -33,17 +33,19 @@ go get github.com/gennaro-tedesco/archimede
 ## Usage
 Various flags allow to customise the output: see `archimede --help` for full details or examples below
 
-| flag      | description                               | default
-|:--------- |:----------------------------------------- |:-------
-| -s (bool) | display output in short format?           | false
-| -g (bool) | include `./.git` folder in files stats?   | false
-| -e (str)  | directory to exclude from stats/counts    | none
-| -c (str)  | choose display text color (see `--help`)  | cyan
-| -d (str)  | choose delimiter character                | empty string
+| flag             | type   | description                               | default
+|:---------------- |:------ |:----------------------------------------- |:-------
+| -s/--short       | bool   | display output in short format?           | false
+| -g/--git         | bool   | include `./.git` folder in files stats?   | false
+| -e/--exclude-dir | string | directory to exclude from stats/counts    | none
+| -v/--exclude-file| string | file type to exclude from stats/counts    | none
+| -c/--colour      | string | choose display text color (see `--help`)  | cyan
+| -d/--delimiter   | string | choose delimiter character                | empty string
 
 
 ## Examples
 ```
+# describe purpose of flags
 archimede -s -d":"
 ```
 <details>
@@ -53,6 +55,7 @@ archimede -s -d":"
 </details>
 
 ```
+# describe purpose of flags
 archimede -c blue -g
 ```
 <details>

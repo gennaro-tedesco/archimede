@@ -26,14 +26,15 @@ func colourMap() map[string]text.Color {
 func displayInfo(
 	short bool,
 	git bool,
-	exclude string,
+	excludeDir string,
+	excludeFile string,
 	textColour string,
 	delimiter string) {
 
 	t := createTable(textColour)
 	displayCwd(t, delimiter)
-	displayFiles(t, short, git, exclude, delimiter)
-	displayDirs(t, short, exclude, delimiter)
+	displayFiles(t, short, git, excludeDir, excludeFile, delimiter)
+	displayDirs(t, short, excludeDir, delimiter)
 	displayGit(t, short, delimiter)
 	displayDiskUsage(t, delimiter)
 	t.AppendSeparator()
@@ -70,8 +71,8 @@ func displayCwd(t table.Writer, delimiter string) {
 	t.AppendRow(table.Row{fmt.Sprintf("Path%v", delimiter), fmt.Sprint(getCwd())})
 }
 
-func displayFiles(t table.Writer, short bool, git bool, exclude string, delimiter string) {
-	filesList := getFiles(git, exclude)
+func displayFiles(t table.Writer, short bool, git bool, excludeDir string, excludeFile string, delimiter string) {
+	filesList := getFiles(git, excludeDir, excludeFile)
 	totalFiles, extCount := countFiles(filesList)
 	total := totalFiles["normal"] + totalFiles["hidden"]
 
@@ -90,8 +91,8 @@ func displayFiles(t table.Writer, short bool, git bool, exclude string, delimite
 	}
 }
 
-func displayDirs(t table.Writer, short bool, exclude string, delimiter string) {
-	dirsList := countDirs(exclude)
+func displayDirs(t table.Writer, short bool, excludeDir string, delimiter string) {
+	dirsList := countDirs(excludeDir)
 	if !short {
 		t.AppendRow(table.Row{fmt.Sprintf("Dirs%v", delimiter),
 			fmt.Sprintf("%v   + %v  /  + %v  / /  ",
