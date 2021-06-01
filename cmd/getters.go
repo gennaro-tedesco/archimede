@@ -96,20 +96,25 @@ func sortExtensions(extCount map[string]int) []kv {
 	return ss
 }
 
-func countDirs() map[string]int {
+func countDirs(exclude string) map[string]int {
 	var gr = regexp.MustCompile(`^\.git`)
 	dirList := map[string]int{
 		"one":   0,
 		"two":   0,
 		"three": 0,
 	}
+	include := true
 
 	err := filepath.WalkDir(".",
 		func(path string, d fs.DirEntry, e error) error {
 			if e != nil {
 				return e
 			}
-			if d.IsDir() && path != "." && !gr.MatchString(path) {
+			if exclude != "" {
+				er := regexp.MustCompile(fmt.Sprintf(`^%v`, exclude))
+				include = !er.MatchString(path)
+			}
+			if d.IsDir() && include && path != "." && !gr.MatchString(path) {
 				depth := strings.Split(path, "/")
 				if len(depth) == 1 {
 					dirList["one"]++

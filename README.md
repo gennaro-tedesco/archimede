@@ -37,7 +37,7 @@ Various flags allow to customise the output: see `archimede --help` for full det
 |:--------- |:----------------------------------------- |:-------
 | -s (bool) | display output in short format?           | false
 | -g (bool) | include `./.git` folder in files stats?   | false
-| -e (str)  | directory to exclude in files stats       | none
+| -e (str)  | directory to exclude from stats/counts    | none
 | -c (str)  | choose display text color (see `--help`)  | cyan
 | -d (str)  | choose delimiter character                | empty string
 

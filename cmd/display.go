@@ -33,7 +33,7 @@ func displayInfo(
 	t := createTable(textColour)
 	displayCwd(t, delimiter)
 	displayFiles(t, short, git, exclude, delimiter)
-	displayDirs(t, short, delimiter)
+	displayDirs(t, short, exclude, delimiter)
 	displayGit(t, short, delimiter)
 	displayDiskUsage(t, delimiter)
 	t.AppendSeparator()
@@ -90,8 +90,8 @@ func displayFiles(t table.Writer, short bool, git bool, exclude string, delimite
 	}
 }
 
-func displayDirs(t table.Writer, short bool, delimiter string) {
-	dirsList := countDirs()
+func displayDirs(t table.Writer, short bool, exclude string, delimiter string) {
+	dirsList := countDirs(exclude)
 	if !short {
 		t.AppendRow(table.Row{fmt.Sprintf("Dirs%v", delimiter),
 			fmt.Sprintf("%v   + %v  /  + %v  / /  ",
