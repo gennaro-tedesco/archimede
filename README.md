@@ -36,9 +36,10 @@ Various flags allow to customise the output: see `archimede --help` for full det
 | flag      | description                               | default
 |:--------- |:----------------------------------------- |:-------
 | -s (bool) | display output in short format?           | false
-| -g (bool) | include `./.git` files in files counts?   | false
+| -g (bool) | include `./.git` folder in files stats?   | false
+| -e (str)  | directory to exclude in files stats       | none
 | -c (str)  | choose display text color (see `--help`)  | cyan
-| -d (str)  | choose delimiter character                | empty
+| -d (str)  | choose delimiter character                | empty string
 
 
 ## Examples

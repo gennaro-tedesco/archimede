@@ -26,12 +26,13 @@ func colourMap() map[string]text.Color {
 func displayInfo(
 	short bool,
 	git bool,
+	exclude string,
 	textColour string,
 	delimiter string) {
 
 	t := createTable(textColour)
 	displayCwd(t, delimiter)
-	displayFiles(t, short, git, delimiter)
+	displayFiles(t, short, git, exclude, delimiter)
 	displayDirs(t, short, delimiter)
 	displayGit(t, short, delimiter)
 	displayDiskUsage(t, delimiter)
@@ -69,8 +70,8 @@ func displayCwd(t table.Writer, delimiter string) {
 	t.AppendRow(table.Row{fmt.Sprintf("Path%v", delimiter), fmt.Sprint(getCwd())})
 }
 
-func displayFiles(t table.Writer, short bool, git bool, delimiter string) {
-	filesList := getFiles(git)
+func displayFiles(t table.Writer, short bool, git bool, exclude string, delimiter string) {
+	filesList := getFiles(git, exclude)
 	totalFiles, extCount := countFiles(filesList)
 	total := totalFiles["normal"] + totalFiles["hidden"]
 

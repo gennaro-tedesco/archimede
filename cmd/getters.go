@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"io/fs"
 	"log"
 	"os"
@@ -24,17 +25,22 @@ func getCwd() string {
 	return dir
 }
 
-func getFiles(gitFolder bool) []string {
+func getFiles(git bool, exclude string) []string {
 	var filesList []string
 	var gr = regexp.MustCompile(`^\.git/`)
+	include := true
 
 	err := filepath.WalkDir(".",
 		func(path string, d fs.DirEntry, e error) error {
 			if e != nil {
 				return e
 			}
-			if !d.IsDir() {
-				if gitFolder {
+			if exclude != "" {
+				er := regexp.MustCompile(fmt.Sprintf(`^%v`, exclude))
+				include = !er.MatchString(path)
+			}
+			if !d.IsDir() && include {
+				if git {
 					filesList = append(filesList, path)
 				} else if !gr.MatchString(path) {
 					filesList = append(filesList, path)

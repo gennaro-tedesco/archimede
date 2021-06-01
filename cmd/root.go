@@ -11,11 +11,13 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		short, _ := cmd.Flags().GetBool("short")
 		git, _ := cmd.Flags().GetBool("git")
+		exclude, _ := cmd.Flags().GetString("exclude")
 		textColour, _ := cmd.Flags().GetString("colour")
 		delimiter, _ := cmd.Flags().GetString("delimiter")
 		displayInfo(
 			short,
 			git,
+			exclude,
 			textColour,
 			delimiter)
 	},
@@ -28,6 +30,7 @@ func Execute() {
 func init() {
 	rootCmd.Flags().BoolP("short", "s", false, "print short format: default false")
 	rootCmd.Flags().BoolP("git", "g", false, "include .git folder in files stats: default false")
+	rootCmd.Flags().StringP("exclude", "e", "", "exclude directory in files stats")
 	rootCmd.Flags().StringP("colour", "c", "cyan", "text colour")
 	rootCmd.Flags().StringP("delimiter", "d", " ", "key-value delimiter character")
 	rootCmd.SetHelpTemplate(getRootHelp())
