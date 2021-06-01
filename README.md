@@ -21,7 +21,7 @@
 </h3>
 
 
-Unobtrusive, fast and informative: `archimede` is the project directory information fetcher. Whether it is a new git project or old legacy code, visualise a quick summary of project structure, files composition, disk space and status.
+The unobtrusive, fast and informative project information fetcher. Whether it is a new git project or old legacy code, visualise a quick summary of directory structure, files composition, disk space and status.
 
 
 ## Installation
@@ -31,7 +31,7 @@ go get github.com/gennaro-tedesco/archimede
 ```
 
 ## Usage
-Many flags allow to customise the output: see `archimede --help` for full details or examples below
+Various flags allow to customise the output: see `archimede --help` for full details or examples below
 
 | flag      | description                               | default
 |:--------- |:----------------------------------------- |:-------
@@ -48,7 +48,7 @@ archimede -s -d":"
 <details>
   <summary>Show output</summary>
 
-  <img alt="solarized" src="https://user-images.githubusercontent.com/15387611/114108427-5cf4ca80-98d3-11eb-8b39-99600dd42807.png">
+  <img alt="" src="">
 </details>
 
 ```
@@ -57,7 +57,7 @@ archimede -c blue -g
 <details>
   <summary>Show output</summary>
 
-  <img alt="solarized" src="https://user-images.githubusercontent.com/15387611/114108427-5cf4ca80-98d3-11eb-8b39-99600dd42807.png">
+  <img alt="" src="">
 </details>
 
 
