@@ -130,32 +130,32 @@ func isGitRepo() bool {
 }
 
 func getGitStatus() map[string]string {
-	gitBranch, eb := exec.Command("sh", "-c", "git branch --show-current | tr -d '\n' ").Output()
+	gitBranch, eb := exec.Command("sh", "-c", "git branch --show-current").Output()
 	if eb != nil {
 		log.Fatal(eb)
 	}
 
-	modified, em := exec.Command("sh", "-c", "git diff --name-only --diff-filter=M | wc -l | tr -d '\n' | tr -d ' '").Output()
+	modified, em := exec.Command("sh", "-c", "git diff --name-only --diff-filter=M | wc -l").Output()
 	if em != nil {
 		log.Fatal(em)
 	}
 
-	staged, ed := exec.Command("sh", "-c", "git diff --name-only --staged | wc -l | tr -d '\n' | tr -d ' '").Output()
+	staged, ed := exec.Command("sh", "-c", "git diff --name-only --staged | wc -l").Output()
 	if ed != nil {
 		log.Fatal(ed)
 	}
 
 	return map[string]string{
-		"branch":   string(gitBranch),
-		"modified": string(modified),
-		"staged":   string(staged),
+		"branch":   strings.Fields(string(gitBranch))[0],
+		"modified": strings.Fields(string(modified))[0],
+		"staged":   strings.Fields(string(staged))[0],
 	}
 }
 
 func getDiskUsage() string {
-	du, err := exec.Command("sh", "-c", "du -sh . | cut -f1 | tr -d '\n' | tr -d ' '").Output()
+	du, err := exec.Command("sh", "-c", "du -sh . ").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
-	return string(du)
+	return strings.Fields(string(du))[0]
 }
