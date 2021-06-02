@@ -6,6 +6,7 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "archimede",
+	Args:  cobra.NoArgs,
 	Short: "Fetch directory info",
 	Long:  "Unobtrusive directory information fetcher",
 	Run: func(cmd *cobra.Command, args []string) {
