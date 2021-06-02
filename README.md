@@ -20,7 +20,8 @@
 <h4 align="center">Unobtrusive project information fetcher</h4>
 <h3 align="center">
   <a href="#Installation">Installation</a> •
-  <a href="#Usage">Usage</a>
+  <a href="#Usage">Usage</a> •
+  <a href="#Examples">Examples</a>
 </h3>
 
 
@@ -60,30 +61,19 @@ archimede -s -c blue
 <details>
   <summary>Show output</summary>
 
-  <img alt="" src="https://user-images.githubusercontent.com/15387611/120498035-34fb8200-c3bf-11eb-83c7-a67ed06f3b42.png">
+  <img alt="" src="https://user-images.githubusercontent.com/15387611/120533066-a39d0780-c3e0-11eb-9529-22170ed56a0b.png">
 </details>
 
 ```
 # change delimiter, exclude test folder
 archimede -d":" -e test
-```
-<details>
-  <summary>Show output</summary>
 
-  <img alt="" src="https://user-images.githubusercontent.com/15387611/120498908-e6021c80-c3bf-11eb-9d03-bbc502fde473.png">
-</details>
-
-```
 # short format, exclude .vim files
 archimede -s -v .vim
 ```
-<details>
-  <summary>Show output</summary>
-
-  <img alt="" src="https://user-images.githubusercontent.com/15387611/120499354-42fdd280-c3c0-11eb-9a38-28a627681068.png">
-</details>
 
 ```
+# display help page
 archimede --help
 ```
 <details>
