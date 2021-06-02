@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img width="450" src="logo.png">
+  <img width="500" src="logo.png">
   <br>
   archimede
 </h1>
@@ -35,7 +35,7 @@ go get github.com/gennaro-tedesco/archimede
 
 ## Usage
 
-![demo](https://user-images.githubusercontent.com/15387611/120530364-b9f59400-c3dd-11eb-811a-4bcdac4276d2.mov)
+![demo](https://user-images.githubusercontent.com/15387611/120531489-f970b000-c3de-11eb-8965-2efca47fe8c1.gif)
 
 Various flags allow to customise the output: see `archimede --help` for full details or examples below
 
