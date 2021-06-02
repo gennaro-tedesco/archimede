@@ -68,7 +68,10 @@ Flags:
 	whether to display output in pretty long format (default)
 	or short one. For files and directories the short format
 	only displays numerical counts without descriptors; for
-	git status it only displays the current branch name
+	git status it only displays the current branch name.
+	Notice that the default long format makes use of terminal
+	unicode characters that may not render perfectly with all
+	terminals or fonts: if so use -s.
 
 	type boolean: archimede -s
 
@@ -109,7 +112,6 @@ Flags:
 	type string: archimede -d ":"
 
 Help commands:
-  help        help about any command
   version     print current version
 `
 }

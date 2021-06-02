@@ -41,7 +41,10 @@ Various flags allow to customise the output: see `archimede --help` for full det
 | -v/--exclude-file| string | file type to exclude from stats/counts    | none
 | -c/--colour      | string | choose display text color (see `--help`)  | cyan
 | -d/--delimiter   | string | choose delimiter character                | empty string
+| -h/--help        |        | open the help page                        |
 
+Notice that the default display option in long format (no `-s` flag) makes use of unicode
+terminal characters that may not render perfectly with all terminals/fonts: if so use `-s`.
 
 ## Examples
 ```
@@ -64,6 +67,14 @@ archimede -c blue -g
   <img alt="" src="">
 </details>
 
+```
+archimede --help
+```
+<details>
+  <summary>Show output</summary>
+
+  <img alt="" src="">
+</details>
 
 ## Feedback
 If you find this application useful consider awarding it a ⭐, it is a great way to give feedback! Otherwise, any additional suggestions or merge request is warmly welcome!
