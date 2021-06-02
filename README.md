@@ -1,4 +1,7 @@
 <h1 align="center">
+  <br>
+  <img src="logo.png">
+  <br>
   archimede
 </h1>
 
