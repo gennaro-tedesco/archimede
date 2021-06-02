@@ -78,8 +78,8 @@ Flags:
 
   -g, --git
 	whether to include the /.git folder in calculating total
-	file counts and distribution. Defaults to false.
-	Equivalent to invoking archimede -e .git
+	file counts and distribution. Defaults to false, which is
+	equivalent to invoking archimede -e .git
 
 	type boolean: archimede -s
 

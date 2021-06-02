@@ -48,23 +48,33 @@ terminal characters that may not render perfectly with all terminals/fonts: if s
 
 ## Examples
 ```
-# describe purpose of flags
-archimede -s -d":"
+# short format, blue text
+archimede -s -c blue
 ```
 <details>
   <summary>Show output</summary>
 
-  <img alt="" src="">
+  <img alt="" src="https://user-images.githubusercontent.com/15387611/120498035-34fb8200-c3bf-11eb-83c7-a67ed06f3b42.png">
 </details>
 
 ```
-# describe purpose of flags
-archimede -c blue -g
+# change delimiter, exclude test folder
+archimede -d":" -e test
 ```
 <details>
   <summary>Show output</summary>
 
-  <img alt="" src="">
+  <img alt="" src="https://user-images.githubusercontent.com/15387611/120498908-e6021c80-c3bf-11eb-9d03-bbc502fde473.png">
+</details>
+
+```
+# short format, exclude .vim files
+archimede -s -v .vim
+```
+<details>
+  <summary>Show output</summary>
+
+  <img alt="" src="https://user-images.githubusercontent.com/15387611/120499354-42fdd280-c3c0-11eb-9a38-28a627681068.png">
 </details>
 
 ```
@@ -73,7 +83,7 @@ archimede --help
 <details>
   <summary>Show output</summary>
 
-  <img alt="" src="">
+  <img alt="help" src="https://user-images.githubusercontent.com/15387611/120497389-a4bd3d00-c3be-11eb-8134-3e3fd10f34e6.png">
 </details>
 
 ## Feedback
