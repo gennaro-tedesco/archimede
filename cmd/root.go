@@ -81,7 +81,7 @@ Flags:
 	file counts and distribution. Defaults to false, which is
 	equivalent to invoking archimede -e .git
 
-	type boolean: archimede -s
+	type boolean: archimede -g
 
   -e, --exclude-dir
 	directory to explicitly exclude from file counts and
