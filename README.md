@@ -57,30 +57,16 @@ terminal characters that may not render perfectly with all terminals/fonts: if s
 ```
 # short format, blue text
 archimede -s -c blue
-```
-<details>
-  <summary>Show output</summary>
 
-  <img alt="" src="https://user-images.githubusercontent.com/15387611/120533066-a39d0780-c3e0-11eb-9529-22170ed56a0b.png">
-</details>
-
-```
 # change delimiter, exclude test folder
 archimede -d":" -e test
 
 # short format, exclude .vim files
 archimede -s -v .vim
-```
 
-```
 # display help page
 archimede --help
 ```
-<details>
-  <summary>Show output</summary>
-
-  <img alt="help" src="https://user-images.githubusercontent.com/15387611/120497389-a4bd3d00-c3be-11eb-8134-3e3fd10f34e6.png">
-</details>
 
 ## Feedback
 If you find this application useful consider awarding it a ⭐, it is a great way to give feedback! Otherwise, any additional suggestions or merge request is warmly welcome!
