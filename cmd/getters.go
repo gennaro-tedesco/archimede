@@ -41,7 +41,7 @@ func getFiles(git bool, excludeDir string, excludeFile string) []string {
 				includeDir = !er.MatchString(path)
 			}
 			if excludeFile != "" {
-				includeFile = filepath.Ext(path)!=excludeFile
+				includeFile = filepath.Ext(path) != excludeFile
 			}
 			if !d.IsDir() && includeDir && includeFile {
 				if git {
@@ -145,10 +145,22 @@ func isGitRepo() bool {
 }
 
 func getGitStatus() map[string]string {
-	gitBranch, eb := exec.Command("sh", "-c", "git branch --show-current").Output()
-	if eb != nil {
+   branch, eb := os.ReadFile(".git/HEAD");
+
+	if eb == nil {
+      contents := string(branch);
+      split := strings.Split(contents, ":");
+
+      // We're looking at a branch, e.g. refs/heads/master
+      if len(split) != 1 {
+         components := strings.Split(split[1], "/");
+         le := len(components);
+         branch = []byte(components[le - 1]);
+      } 
+	} else {
 		log.Fatal(eb)
-	}
+   }
+
 
 	modified, em := exec.Command("sh", "-c", "git diff --name-only --diff-filter=M | wc -l").Output()
 	if em != nil {
@@ -161,7 +173,7 @@ func getGitStatus() map[string]string {
 	}
 
 	return map[string]string{
-		"branch":   strings.Fields(string(gitBranch))[0],
+		"branch":   strings.Fields(string(branch))[0],
 		"modified": strings.Fields(string(modified))[0],
 		"staged":   strings.Fields(string(staged))[0],
 	}
