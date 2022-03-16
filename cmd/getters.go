@@ -145,22 +145,21 @@ func isGitRepo() bool {
 }
 
 func getGitStatus() map[string]string {
-   branch, eb := os.ReadFile(".git/HEAD");
+	branch, eb := os.ReadFile(".git/HEAD")
 
 	if eb == nil {
-      contents := string(branch);
-      split := strings.Split(contents, ":");
+		contents := string(branch)
+		split := strings.Split(contents, ":")
 
-      // We're looking at a branch, e.g. refs/heads/master
-      if len(split) != 1 {
-         components := strings.Split(split[1], "/");
-         le := len(components);
-         branch = []byte(components[le - 1]);
-      } 
+		// We're looking at a branch, e.g. refs/heads/master
+		if len(split) != 1 {
+			components := strings.Split(split[1], "/")
+			le := len(components)
+			branch = []byte(components[le-1])
+		}
 	} else {
 		log.Fatal(eb)
-   }
-
+	}
 
 	modified, em := exec.Command("sh", "-c", "git diff --name-only --diff-filter=M | wc -l").Output()
 	if em != nil {
