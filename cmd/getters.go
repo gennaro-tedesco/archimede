@@ -156,6 +156,8 @@ func getGitStatus() map[string]string {
 			components := strings.Split(split[1], "/")
 			le := len(components)
 			branch = []byte(components[le-1])
+		} else {
+			branch = branch[:7]
 		}
 	} else {
 		log.Fatal(eb)
