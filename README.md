@@ -31,7 +31,7 @@ The unobtrusive, fast and informative project information fetcher. Whether it is
 ## Installation
 Go get it!
 ```
-go get github.com/gennaro-tedesco/archimede
+go install github.com/gennaro-tedesco/archimede@latest
 ```
 
 ## Usage
