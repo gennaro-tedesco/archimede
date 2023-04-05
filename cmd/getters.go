@@ -41,7 +41,7 @@ func getFiles(git bool, excludeDir string, excludeFile string) []string {
 				includeDir = !er.MatchString(path)
 			}
 			if excludeFile != "" {
-				includeFile = filepath.Ext(path)!=excludeFile
+				includeFile = filepath.Ext(path) != excludeFile
 			}
 			if !d.IsDir() && includeDir && includeFile {
 				if git {
